@@ -315,7 +315,7 @@ sub download_urls
 
 sub parse_config_line
 {
-    my $pattern_deb_line = qr/^[\t ]*(?<type>deb-src|deb)(?:-(?<arch>[\w\-]+))?[\t ]+(?:\[(?<options>[^\]]+)\][\t ]+)?(?<uri>[^\s]+)[\t ]+(?<components>.*)$/;
+    my $pattern_deb_line = qr/^[\t ]*(?<type>deb-src|deb)(?:-(?<arch>[\w\-]+))?[\t ]+(?:\[(?<options>[^\]]+)\][\t ]+)?(?<uri>[^\s]+)[\t ]+(?<components>.+)$/;
     my $line = $_;
     my %config;
     if ( $line =~ $pattern_deb_line ) {
@@ -814,13 +814,9 @@ foreach (@config_binaries)
             process_index( $uri, "/dists/$distribution/$component/binary-all/Packages", 1 );
         }
     }
-    elsif ($distribution)
-    {
-        process_index( $uri, "/$distribution/Packages" );
-    }
     else
     {
-        process_index( $uri, "/Packages" );
+        process_index( $uri, "/$distribution/Packages" );
     }
 }
 
