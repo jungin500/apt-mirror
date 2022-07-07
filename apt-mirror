@@ -514,19 +514,27 @@ sub find_metadata_in_release
     else {
         $dist_uri  = remove_double_slashes($uri . "/" . $distribution . "/");
     }
-    $release_uri  = $dist_uri . "Release";
-    $release_path = get_variable("skel_path") . "/" . sanitise_uri($release_uri);
 
-    unless ( open STREAM, "<$release_path" )
+    my $stream;
+    foreach my $release_filename ("InRelease", "Release")
     {
-        warn( "Failed to open Release file from " . $release_uri );
+        $release_uri  = $dist_uri . $release_filename;
+        $release_path = get_variable("skel_path") . "/" . sanitise_uri($release_uri);
+
+        last if ( open $stream, "<", $release_path);
+        $stream = undef;
+    }
+
+    unless ( $stream )
+    {
+        warn( "Failed to find InRelease or Release in " . get_variable("skel_path") . "/" . sanitise_uri($dist_uri) );
         return;
     }
 
     my $checksums = 0;
     my $acquire_by_hash = 0;
     my @parts_to_download = ();
-    while ( $line = <STREAM> )
+    while ( $line = <$stream> )
     {
         chomp $line;
         if ($checksums)
@@ -606,6 +614,7 @@ sub find_metadata_in_release
             }
         }
     }
+    close $stream;
     foreach (@parts_to_download)
     {
         my ( $sha256, $size, $filename ) = @{$_};
