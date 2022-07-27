@@ -795,6 +795,7 @@ sub need_update
     return 0 if $size_on_server == $size;
 
     if ( get_variable("unlink") == 1 )
+    {
         unlink $filename;
     }
     return 1;
