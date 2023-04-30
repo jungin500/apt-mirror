@@ -570,7 +570,7 @@ foreach (@config_sources)
         $url = $uri . "/" . $distribution . "/";
     }
 
-    add_url_to_download( $url . "InRelease" );
+    # add_url_to_download( $url . "InRelease" );
     add_url_to_download( $url . "Release" );
     add_url_to_download( $url . "Release.gpg" );
 }
@@ -589,7 +589,7 @@ foreach (@config_binaries)
         $url = $uri . "/" . $distribution . "/";
     }
 
-    add_url_to_download( $url . "InRelease" );
+    # add_url_to_download( $url . "InRelease" );
     add_url_to_download( $url . "Release" );
     add_url_to_download( $url . "Release.gpg" );
 
